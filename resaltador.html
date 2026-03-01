@@ -1,0 +1,959 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resaltador de Palabras Prohibidas — YouTube</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@400;600;700;800&display=swap');
+
+        :root {
+            --bg: #0a0a0f;
+            --surface: #111118;
+            --surface2: #1a1a24;
+            --border: #2a2a3a;
+            --red: #ff2d4a;
+            --orange: #ff6b2d;
+            --yellow: #ffd23f;
+            --green: #2dff8f;
+            --cyan: #2dd4ff;
+            --text: #e8e8f0;
+            --muted: #8888a0;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            font-family: 'Space Mono', monospace;
+            min-height: 100vh;
+            padding: 0;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #0a0a0f 0%, #1a0a1f 50%, #0a0f1a 100%);
+            border-bottom: 1px solid var(--border);
+            padding: 28px 32px 24px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            left: -60px;
+            right: -60px;
+            height: 200px;
+            background:
+                radial-gradient(ellipse at 30% 50%, rgba(255, 45, 74, 0.12) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(45, 212, 255, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 45, 74, 0.15);
+            border: 1px solid rgba(255, 45, 74, 0.4);
+            color: var(--red);
+            font-size: 10px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 4px 12px;
+            border-radius: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header h1 {
+            font-family: 'Syne', sans-serif;
+            font-weight: 800;
+            font-size: clamp(22px, 4vw, 40px);
+            background: linear-gradient(135deg, #fff 0%, #a0a0c0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 6px;
+        }
+
+        .header p {
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        .legend {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 32px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 32px 60px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+        }
+
+        @media (max-width: 800px) {
+            .main {
+                grid-template-columns: 1fr;
+                padding: 0 16px 40px;
+            }
+
+            .legend {
+                padding: 0 16px;
+            }
+
+            .header {
+                padding: 20px 16px 18px;
+            }
+        }
+
+        .panel {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .panel-header {
+            background: var(--surface2);
+            border-bottom: 1px solid var(--border);
+            padding: 12px 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+        }
+
+        .panel-title {
+            font-family: 'Syne', sans-serif;
+            font-weight: 700;
+            font-size: 13px;
+            color: var(--text);
+        }
+
+        .panel-subtitle {
+            font-size: 10px;
+            color: var(--muted);
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* Editor de entrada — recibe formato desde Word */
+        #inputArea {
+            width: 100%;
+            height: 500px;
+            overflow-y: auto;
+            padding: 18px;
+            background: #ffffff;
+            color: #1a1a1a;
+            border: none;
+            outline: none;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            resize: none;
+            display: block;
+        }
+
+        #inputArea:empty::before {
+            content: attr(data-placeholder);
+            color: var(--muted);
+            pointer-events: none;
+        }
+
+        /* Área de resultado */
+        #outputArea {
+            width: 100%;
+            height: 500px;
+            overflow-y: auto;
+            padding: 18px;
+            background: #ffffff;
+            color: #1a1a1a;
+            font-family: 'Space Mono', monospace;
+            font-size: 13px;
+            line-height: 1.8;
+            word-break: break-word;
+            white-space: pre-wrap;
+        }
+
+        #outputArea p {
+            margin: 0;
+            min-height: 1em;
+        }
+
+        /* Highlights */
+        .hl-extreme {
+            background: rgba(255, 45, 74, 0.22);
+            color: #ff5566;
+            border-bottom: 2px solid var(--red);
+            border-radius: 2px;
+            padding: 0 2px;
+            font-weight: 700;
+            font-size: 40px;
+            cursor: help;
+            position: relative;
+        }
+
+        .hl-high {
+            background: rgba(255, 107, 45, 0.2);
+            color: #ff8055;
+            border-bottom: 2px solid var(--orange);
+            border-radius: 2px;
+            padding: 0 2px;
+            font-weight: 700;
+            font-size: 40px;
+            cursor: help;
+        }
+
+        .hl-medium {
+            background: rgba(255, 210, 63, 0.18);
+            color: #ffd23f;
+            border-bottom: 2px solid var(--yellow);
+            border-radius: 2px;
+            padding: 0 2px;
+            font-weight: 700;
+            font-size: 40px;
+            cursor: help;
+        }
+
+        .hl-low {
+            background: rgba(45, 255, 143, 0.12);
+            color: #2dff8f;
+            border-bottom: 2px solid var(--green);
+            border-radius: 2px;
+            padding: 0 2px;
+            font-weight: 700;
+            font-size: 40px;
+            cursor: help;
+        }
+
+        .actions-bar {
+            display: flex;
+            gap: 8px;
+            padding: 10px 18px;
+            border-top: 1px solid var(--border);
+            background: var(--surface2);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .btn {
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-family: 'Space Mono', monospace;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 7px 14px;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            border-color: var(--cyan);
+            color: var(--cyan);
+        }
+
+        .btn.primary {
+            border-color: var(--cyan);
+            color: var(--cyan);
+            background: rgba(45, 212, 255, 0.06);
+        }
+
+        .btn.danger {
+            border-color: rgba(255, 45, 74, 0.3);
+            color: var(--red);
+        }
+
+        .btn.danger:hover {
+            background: rgba(255, 45, 74, 0.08);
+        }
+
+        .stats-bar {
+            display: flex;
+            gap: 10px;
+            padding: 8px 18px;
+            border-bottom: 1px solid var(--border);
+            font-size: 10px;
+            color: var(--muted);
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .stat-pill {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            padding: 3px 8px;
+            border-radius: 20px;
+        }
+
+        .stat-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+        }
+
+        .copy-confirm {
+            font-size: 10px;
+            color: var(--green);
+            opacity: 0;
+            transition: opacity 0.3s;
+            letter-spacing: 1px;
+        }
+
+        .copy-confirm.show {
+            opacity: 1;
+        }
+
+        /* STATUS INDICATOR */
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 20px;
+            border: 1px solid transparent;
+            transition: all 0.3s;
+            min-width: 110px;
+            justify-content: center;
+        }
+
+        .status-badge.idle {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .status-badge.analyzing {
+            opacity: 1;
+            background: rgba(255, 210, 63, 0.1);
+            border-color: rgba(255, 210, 63, 0.35);
+            color: var(--yellow);
+        }
+
+        .status-badge.done {
+            opacity: 1;
+            background: rgba(45, 255, 143, 0.1);
+            border-color: rgba(45, 255, 143, 0.35);
+            color: var(--green);
+        }
+
+        .spinner {
+            width: 8px;
+            height: 8px;
+            border: 2px solid rgba(255, 210, 63, 0.3);
+            border-top-color: var(--yellow);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            flex-shrink: 0;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        /* Tooltip on hover */
+        .hl-extreme[title]::after,
+        .hl-high[title]::after,
+        .hl-medium[title]::after,
+        .hl-low[title]::after {
+            content: attr(title);
+            position: absolute;
+            bottom: 120%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--surface2);
+            border: 1px solid var(--border);
+            color: var(--muted);
+            font-size: 10px;
+            padding: 4px 8px;
+            border-radius: 3px;
+            white-space: nowrap;
+            pointer-events: none;
+            opacity: 0;
+            z-index: 10;
+            font-weight: 400;
+            transition: opacity 0.15s;
+        }
+
+        .hl-extreme:hover::after,
+        .hl-high:hover::after,
+        .hl-medium:hover::after,
+        .hl-low:hover::after {
+            opacity: 1;
+        }
+
+        .hl-extreme,
+        .hl-high,
+        .hl-medium,
+        .hl-low {
+            position: relative;
+        }
+
+        #noMatchMsg {
+            color: var(--muted);
+            font-size: 12px;
+            text-align: center;
+            padding: 40px 18px;
+            display: none;
+        }
+
+        .info-note {
+            font-size: 10px;
+            color: var(--muted);
+            margin-left: auto;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="header">
+        <div class="header-inner">
+            <div class="badge">⚠ DETECTOR DE TÉRMINOS — YouTube v3.0</div>
+            <h1>Resaltador de Palabras Prohibidas</h1>
+            <p>Pegá tu texto (con formato de Word) en el panel izquierdo. Las palabras prohibidas se resaltan
+                automáticamente con su nivel de riesgo.</p>
+        </div>
+    </div>
+
+    <div class="legend">
+        <span class="legend-item"><span class="legend-dot" style="background:rgba(255,45,74,0.8)"></span>Extremo</span>
+        <span class="legend-item"><span class="legend-dot" style="background:rgba(255,107,45,0.8)"></span>Alto</span>
+        <span class="legend-item"><span class="legend-dot" style="background:rgba(255,210,63,0.8)"></span>Medio</span>
+        <span class="legend-item"><span class="legend-dot" style="background:rgba(45,255,143,0.8)"></span>Bajo</span>
+        <span class="info-note" style="margin-left:auto;font-size:10px;color:var(--muted)">Hover sobre palabra resaltada
+            para ver nivel de riesgo</span>
+    </div>
+
+    <div class="main">
+
+        <!-- PANEL IZQUIERDO: ENTRADA -->
+        <div class="panel">
+            <div class="panel-header">
+                <div>
+                    <div class="panel-title">📋 Texto de entrada</div>
+                    <div class="panel-subtitle">Pegá aquí tu texto desde Word</div>
+                </div>
+            </div>
+            <div id="inputArea" contenteditable="true"
+                data-placeholder="Pegá aquí tu texto con formato... (Ctrl+V desde Word, se conserva el formato)"></div>
+            <div class="actions-bar">
+                <button class="btn primary" onclick="processText()">▶ Analizar texto</button>
+                <button class="btn danger" onclick="clearAll()">✕ Limpiar</button>
+                <span class="info-note">El análisis es automático al escribir</span>
+            </div>
+        </div>
+
+        <!-- PANEL DERECHO: RESULTADO -->
+        <div class="panel">
+            <div class="panel-header">
+                <div>
+                    <div class="panel-title">✅ Texto con resaltado</div>
+                    <div class="panel-subtitle">Listo para copiar</div>
+                </div>
+                <div id="statusBadge" class="status-badge idle">
+                    <span id="statusSpinner" class="spinner" style="display:none"></span>
+                    <span id="statusText"></span>
+                </div>
+            </div>
+            <div class="stats-bar" id="statsBar" style="display:none">
+                <span class="stat-pill"><span class="stat-dot" style="background:var(--red)"></span><span
+                        id="cnt-extreme">0</span> extremos</span>
+                <span class="stat-pill"><span class="stat-dot" style="background:var(--orange)"></span><span
+                        id="cnt-high">0</span> altos</span>
+                <span class="stat-pill"><span class="stat-dot" style="background:var(--yellow)"></span><span
+                        id="cnt-medium">0</span> medios</span>
+                <span class="stat-pill"><span class="stat-dot" style="background:var(--green)"></span><span
+                        id="cnt-low">0</span> bajos</span>
+                <span class="stat-pill" style="margin-left:auto"><span id="cnt-total">0</span> coincidencias</span>
+            </div>
+            <div id="outputArea">
+                <div id="noMatchMsg">El texto procesado aparecerá aquí</div>
+            </div>
+            <div class="actions-bar">
+                <button class="btn primary" onclick="copyHtml()">⎘ Copiar con formato HTML</button>
+                <button class="btn" onclick="copyPlain()">⎘ Copiar texto plano</button>
+                <span class="copy-confirm" id="copyConfirm">✓ Copiado</span>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // ============================================================
+        //  BASE DE TÉRMINOS PROHIBIDOS extraídos de youtube-guia-terminos.html
+        //  Formato: { term, risk: 'extreme'|'high'|'medium'|'low' }
+        //  Las variantes y formas flexionadas se agregan como entradas separadas
+        // ============================================================
+        const TERMS = [
+            // ——— VIOLENCIA Y MUERTE ———
+            { term: 'asesinar', risk: 'extreme' },
+            { term: 'asesinato', risk: 'extreme' },
+            { term: 'matar', risk: 'extreme' },
+            { term: 'mató', risk: 'extreme' },
+            { term: 'mata', risk: 'extreme' },
+            { term: 'mataron', risk: 'extreme' },
+            { term: 'asesino', risk: 'high' },
+            { term: 'asesina', risk: 'high' },
+            { term: 'muerte', risk: 'high' },
+            { term: 'sangre', risk: 'extreme' },
+            { term: 'ensangrentado', risk: 'extreme' },
+            { term: 'ensangrentada', risk: 'extreme' },
+            { term: 'estrangular', risk: 'extreme' },
+            { term: 'estrangulamiento', risk: 'extreme' },
+            { term: 'asfixiar', risk: 'extreme' },
+            { term: 'asfixia', risk: 'extreme' },
+            { term: 'apuñalar', risk: 'extreme' },
+            { term: 'apuñalamiento', risk: 'extreme' },
+            { term: 'descuartizar', risk: 'extreme' },
+            { term: 'desmembrar', risk: 'extreme' },
+            { term: 'torturar', risk: 'extreme' },
+            { term: 'tortura', risk: 'extreme' },
+            { term: 'mutilar', risk: 'extreme' },
+            { term: 'mutilación', risk: 'extreme' },
+            { term: 'decapitar', risk: 'extreme' },
+            { term: 'decapitación', risk: 'extreme' },
+            { term: 'homicidio', risk: 'high' },
+            { term: 'asesinato en serie', risk: 'high' },
+            { term: 'serial killer', risk: 'high' },
+            { term: 'masacre', risk: 'extreme' },
+            { term: 'arma homicida', risk: 'high' },
+            { term: 'cadáver', risk: 'high' },
+            { term: 'linchar', risk: 'extreme' },
+            { term: 'linchamiento', risk: 'extreme' },
+            { term: 'inmolar', risk: 'extreme' },
+            { term: 'inmolación', risk: 'extreme' },
+            { term: 'veneno', risk: 'extreme' },
+            { term: 'envenenar', risk: 'extreme' },
+            { term: 'quemar vivo', risk: 'high' },
+            { term: 'quemado vivo', risk: 'high' },
+            { term: 'golpear hasta la muerte', risk: 'extreme' },
+            { term: 'ahogarse', risk: 'high' },
+            { term: 'ahogar', risk: 'high' },
+            { term: 'herida mortal', risk: 'medium' },
+            { term: 'herida fatal', risk: 'medium' },
+            { term: 'víctima fatal', risk: 'high' },
+            { term: 'crimen pasional', risk: 'medium' },
+            { term: 'femicidio', risk: 'high' },
+            { term: 'feminicidio', risk: 'high' },
+            { term: 'riña', risk: 'high' },
+            { term: 'pelea mortal', risk: 'high' },
+
+            // ——— SEXUAL ———
+            { term: 'violar', risk: 'extreme' },
+            { term: 'violación', risk: 'extreme' },
+            { term: 'violador', risk: 'extreme' },
+            { term: 'abuso sexual', risk: 'extreme' },
+            { term: 'abusar sexualmente', risk: 'high' },
+            { term: 'prostituta', risk: 'high' },
+            { term: 'prostíbulo', risk: 'high' },
+            { term: 'pornografía', risk: 'extreme' },
+            { term: 'acto sexual', risk: 'extreme' },
+            { term: 'relación sexual', risk: 'extreme' },
+            { term: 'acoso sexual', risk: 'high' },
+            { term: 'tráfico sexual', risk: 'extreme' },
+            { term: 'desnudo', risk: 'extreme' },
+            { term: 'consentimiento sexual', risk: 'high' },
+            { term: 'sexo forzado', risk: 'extreme' },
+            { term: 'manipulación sexual', risk: 'high' },
+            { term: 'masturbación', risk: 'extreme' },
+            { term: 'masturbarse', risk: 'extreme' },
+            { term: 'relación extramarital', risk: 'high' },
+            { term: 'infidelidad explícita', risk: 'high' },
+            { term: 'seducción', risk: 'high' },
+
+            // ——— DROGAS ———
+            { term: 'cocaína', risk: 'extreme' },
+            { term: 'heroína', risk: 'extreme' },
+            { term: 'marihuana', risk: 'high' },
+            { term: 'cannabis', risk: 'high' },
+            { term: 'metanfetamina', risk: 'extreme' },
+            { term: 'cristal', risk: 'extreme' },
+            { term: 'meth', risk: 'extreme' },
+            { term: 'fentanilo', risk: 'extreme' },
+            { term: 'lsd', risk: 'high' },
+            { term: 'ácido', risk: 'high' },
+            { term: 'adicto', risk: 'extreme' },
+            { term: 'adicta', risk: 'extreme' },
+            { term: 'adicción', risk: 'high' },
+            { term: 'sobredosis', risk: 'extreme' },
+            { term: 'narcotráfico', risk: 'high' },
+            { term: 'cartel', risk: 'high' },
+            { term: 'cártel', risk: 'high' },
+            { term: 'drogadicto', risk: 'high' },
+            { term: 'droga para violar', risk: 'extreme' },
+            { term: 'burundanga', risk: 'extreme' },
+            { term: 'lavado de dinero', risk: 'extreme' },
+            { term: 'inyectarse', risk: 'extreme' },
+            { term: 'crack', risk: 'high' },
+            { term: 'intoxicación', risk: 'medium' },
+            // Jerga de drogas
+            { term: 'jale', risk: 'extreme' },
+            { term: 'nieve', risk: 'extreme' },
+            { term: 'mota', risk: 'extreme' },
+            { term: 'perico', risk: 'extreme' },
+            { term: 'tiza', risk: 'extreme' },
+            { term: 'trapear', risk: 'extreme' },
+
+            // ——— TERRORISMO ———
+            { term: 'terrorista', risk: 'extreme' },
+            { term: 'atentado terrorista', risk: 'extreme' },
+            { term: 'bomba', risk: 'extreme' },
+            { term: 'arma química', risk: 'extreme' },
+            { term: 'arma biológica', risk: 'extreme' },
+            { term: 'arma nuclear', risk: 'extreme' },
+            { term: 'bomba atómica', risk: 'extreme' },
+            { term: 'yihadista', risk: 'high' },
+            { term: 'yihad', risk: 'high' },
+            { term: 'ataque suicida', risk: 'extreme' },
+            { term: 'extremismo violento', risk: 'extreme' },
+            { term: 'genocidio', risk: 'extreme' },
+            { term: 'arma de destrucción masiva', risk: 'extreme' },
+            { term: 'golpe de estado', risk: 'high' },
+            { term: 'guerrilla', risk: 'high' },
+            { term: 'guerrillero', risk: 'high' },
+            { term: 'propaganda terrorista', risk: 'extreme' },
+            { term: 'francotirador', risk: 'extreme' },
+            { term: 'estado islámico', risk: 'high' },
+            { term: 'isis', risk: 'high' },
+            { term: 'daesh', risk: 'high' },
+            { term: 'explosivo casero', risk: 'extreme' },
+            { term: 'ied', risk: 'extreme' },
+
+            // ——— SALUD MENTAL / SUICIDIO ———
+            { term: 'suicidio', risk: 'extreme' },
+            { term: 'suicidarse', risk: 'extreme' },
+            { term: 'ahorcarse', risk: 'extreme' },
+            { term: 'pastillas para morir', risk: 'extreme' },
+            { term: 'autolesión', risk: 'extreme' },
+            { term: 'cortarse', risk: 'extreme' },
+            { term: 'trastorno alimenticio', risk: 'high' },
+            { term: 'depresión severa', risk: 'medium' },
+            { term: 'psicópata', risk: 'high' },
+            { term: 'psicopatía', risk: 'high' },
+            { term: 'sociópata', risk: 'high' },
+            { term: 'crisis nerviosa', risk: 'medium' },
+            { term: 'bulimia', risk: 'high' },
+            { term: 'anorexia', risk: 'high' },
+            { term: 'trauma', risk: 'medium' },
+            { term: 'traumatizado', risk: 'medium' },
+            { term: 'pacto suicida', risk: 'extreme' },
+            { term: 'eutanasia', risk: 'high' },
+
+            // ——— MENORES ———
+            { term: 'pedófilo', risk: 'extreme' },
+            { term: 'pederasta', risk: 'extreme' },
+            { term: 'abuso infantil', risk: 'extreme' },
+            { term: 'grooming', risk: 'extreme' },
+            { term: 'explotación infantil', risk: 'extreme' },
+            { term: 'tráfico de menores', risk: 'extreme' },
+            { term: 'incesto', risk: 'extreme' },
+            { term: 'seducción de menores', risk: 'extreme' },
+            { term: 'pornografía infantil', risk: 'extreme' },
+
+            // ——— DISCURSO DE ODIO ———
+            { term: 'supremacista', risk: 'extreme' },
+            { term: 'supremacismo racial', risk: 'extreme' },
+            { term: 'nazismo', risk: 'extreme' },
+            { term: 'nazis', risk: 'extreme' },
+            { term: 'homofóbico', risk: 'high' },
+            { term: 'transfóbico', risk: 'high' },
+            { term: 'xenofobia', risk: 'extreme' },
+            { term: 'antisemitismo', risk: 'extreme' },
+            { term: 'islamofobia', risk: 'high' },
+            { term: 'inferioridad racial', risk: 'extreme' },
+            { term: 'misoginia', risk: 'high' },
+            { term: 'pureza racial', risk: 'extreme' },
+            { term: 'eugenesia', risk: 'extreme' },
+
+            // ——— ARMAS ———
+            { term: 'silenciador casero', risk: 'extreme' },
+            { term: 'ghost gun', risk: 'extreme' },
+            { term: 'arma fantasma', risk: 'extreme' },
+            { term: 'armería clandestina', risk: 'high' },
+            { term: 'impresión 3d de armas', risk: 'extreme' },
+            { term: 'tráfico de armas', risk: 'high' },
+            { term: 'munición ilegal', risk: 'high' },
+
+            // ——— DESINFORMACIÓN ———
+            { term: 'cura para el cáncer', risk: 'extreme' },
+            { term: 'deepfake', risk: 'extreme' },
+            { term: 'fraude electoral', risk: 'high' },
+            { term: 'teoría conspirativa', risk: 'high' },
+            { term: 'tratamiento milagroso', risk: 'extreme' },
+            { term: 'suplantación de identidad', risk: 'extreme' },
+        ];
+
+        // Ordenar de más largo a más corto para evitar solapamientos
+        TERMS.sort((a, b) => b.term.length - a.term.length);
+
+        function getRiskLabel(risk) {
+            const map = { extreme: 'EXTREMO', high: 'ALTO', medium: 'MEDIO', low: 'BAJO' };
+            return map[risk] || risk;
+        }
+
+        function getHighlightClass(risk) {
+            return `hl-${risk}`;
+        }
+
+        // ============================================================
+        //  PROCESAR TEXTO
+        //  - Toma el innerHTML del inputArea (preserva formato Word)
+        //  - Itera nodo a nodo para no romper la estructura HTML
+        // ============================================================
+
+        let debounceTimer = null;
+
+        document.getElementById('inputArea').addEventListener('input', function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(processText, 400);
+        });
+
+        document.getElementById('inputArea').addEventListener('paste', function () {
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(processText, 600);
+        });
+
+        // Helper: cede el hilo al navegador para que pueda redibujar
+        function yieldToUI() {
+            return new Promise(resolve => setTimeout(resolve, 0));
+        }
+
+        function setStatus(state, progress) {
+            const badge = document.getElementById('statusBadge');
+            const spinner = document.getElementById('statusSpinner');
+            const text = document.getElementById('statusText');
+            badge.className = 'status-badge ' + state;
+            if (state === 'analyzing') {
+                spinner.style.display = 'block';
+                text.textContent = progress ? `${progress}` : 'Analizando...';
+            } else if (state === 'done') {
+                spinner.style.display = 'none';
+                text.textContent = '✓ Listo';
+            } else {
+                spinner.style.display = 'none';
+                text.textContent = '';
+            }
+        }
+
+        let currentRun = 0; // cancela runs anteriores si el usuario escribe de nuevo
+
+        async function processText() {
+            const inputEl = document.getElementById('inputArea');
+            const outputEl = document.getElementById('outputArea');
+            const noMatchMsg = document.getElementById('noMatchMsg');
+            const statsBar = document.getElementById('statsBar');
+
+            const isEmpty = inputEl.innerText.trim() === '';
+            if (isEmpty) {
+                outputEl.innerHTML = '';
+                noMatchMsg.style.display = 'block';
+                noMatchMsg.textContent = 'El texto procesado aparecerá aquí';
+                statsBar.style.display = 'none';
+                setStatus('idle');
+                return;
+            }
+
+            // Marcar esta ejecución con un ID único
+            const runId = ++currentRun;
+
+            setStatus('analyzing', 'Iniciando...');
+            noMatchMsg.style.display = 'none';
+            await yieldToUI();
+
+            if (runId !== currentRun) return;
+
+            // Trabajar sobre el HTML como string, término a término
+            let html = inputEl.innerHTML;
+            const counts = { extreme: 0, high: 0, medium: 0, low: 0 };
+            const totalTerms = TERMS.length;
+            const YIELD_EVERY = 15; // ceder el hilo al navegador cada N términos
+
+            for (let i = 0; i < TERMS.length; i++) {
+                if (runId !== currentRun) return;
+
+                const entry = TERMS[i];
+                const escaped = entry.term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+                const regex = new RegExp(
+                    `(?<![\\w\\u00C0-\\u024F])(${escaped})(?![\\w\\u00C0-\\u024F])`,
+                    'gi'
+                );
+
+                // Aplicar sólo en partes de texto (no dentro de etiquetas HTML ni <mark>)
+                const parts = html.split(/(<[^>]+>)/);
+                let insideMark = 0;
+                html = parts.map((seg, idx) => {
+                    if (idx % 2 === 1) {
+                        if (/^<mark/i.test(seg)) insideMark++;
+                        else if (/^<\/mark/i.test(seg)) insideMark = Math.max(0, insideMark - 1);
+                        return seg;
+                    }
+                    if (insideMark > 0) return seg;
+                    return seg.replace(regex, (match) => {
+                        counts[entry.risk] = (counts[entry.risk] || 0) + 1;
+                        return `<mark class="hl-${entry.risk}" title="Riesgo: ${getRiskLabel(entry.risk)}">${match}</mark>`;
+                    });
+                }).join('');
+
+                // Mostrar progreso y ceder el hilo al navegador
+                if (i % YIELD_EVERY === 0 || i === TERMS.length - 1) {
+                    setStatus('analyzing', `${Math.min(i + 1, totalTerms)} / ${totalTerms} términos`);
+                    await yieldToUI();
+                    if (runId !== currentRun) return;
+                }
+            }
+
+            outputEl.innerHTML = html;
+
+            const totalMatches = counts.extreme + counts.high + counts.medium + counts.low;
+            document.getElementById('cnt-extreme').textContent = counts.extreme;
+            document.getElementById('cnt-high').textContent = counts.high;
+            document.getElementById('cnt-medium').textContent = counts.medium;
+            document.getElementById('cnt-low').textContent = counts.low;
+            document.getElementById('cnt-total').textContent = totalMatches;
+            statsBar.style.display = totalMatches > 0 ? 'flex' : 'none';
+            setStatus('done');
+        }
+
+        // Estilos inline con colores SÓLIDOS compatibles con Word / Google Docs
+        const WORD_STYLES = {
+            'hl-extreme': 'background-color:#FFCCCC;color:#AA0000;font-weight:bold;font-size:40px;padding:0 2px;border-radius:2px;',
+            'hl-high': 'background-color:#FFE0CC;color:#884400;font-weight:bold;font-size:40px;padding:0 2px;border-radius:2px;',
+            'hl-medium': 'background-color:#FFF5CC;color:#886600;font-weight:bold;font-size:40px;padding:0 2px;border-radius:2px;',
+            'hl-low': 'background-color:#CCFFEE;color:#006633;font-weight:bold;font-size:40px;padding:0 2px;border-radius:2px;',
+        };
+
+        function getStyledHtml(rawHtml) {
+            return rawHtml
+                .replace(/class="hl-extreme"[^>]*/g, `style="${WORD_STYLES['hl-extreme']}"`)
+                .replace(/class="hl-high"[^>]*/g, `style="${WORD_STYLES['hl-high']}"`)
+                .replace(/class="hl-medium"[^>]*/g, `style="${WORD_STYLES['hl-medium']}"`)
+                .replace(/class="hl-low"[^>]*/g, `style="${WORD_STYLES['hl-low']}"`);
+        }
+
+        // Interceptar Ctrl+C directo sobre el panel de resultado
+        document.getElementById('outputArea').addEventListener('copy', async function (e) {
+            const selection = window.getSelection();
+            if (!selection || selection.isCollapsed) return;
+
+            // Obtener el HTML seleccionado
+            const range = selection.getRangeAt(0);
+            const div = document.createElement('div');
+            div.appendChild(range.cloneContents());
+            const styledHtml = getStyledHtml(div.innerHTML);
+
+            e.preventDefault();
+            e.clipboardData.setData('text/html', styledHtml);
+            e.clipboardData.setData('text/plain', selection.toString());
+            showConfirm();
+        });
+
+        function copyHtml() {
+            const outputEl = document.getElementById('outputArea');
+            const styledHtml = getStyledHtml(outputEl.innerHTML);
+
+            // Crear un div oculto fuera de pantalla con el HTML estilizado
+            const tmp = document.createElement('div');
+            tmp.innerHTML = styledHtml;
+            tmp.style.cssText = 'position:fixed;left:-9999px;top:0;white-space:pre-wrap;font-family:Calibri,sans-serif;font-size:11pt;background-color:#ffffff;color:#1a1a1a;';
+            document.body.appendChild(tmp);
+
+            // Seleccionar todo el contenido del div
+            const range = document.createRange();
+            range.selectNodeContents(tmp);
+            const sel = window.getSelection();
+            sel.removeAllRanges();
+            sel.addRange(range);
+
+            // Copiar al portapapeles
+            try {
+                document.execCommand('copy');
+                showConfirm();
+            } catch (err) {
+                alert('No se pudo copiar. Seleccioná el texto manualmente con Ctrl+A y Ctrl+C.');
+            }
+
+            // Limpiar
+            sel.removeAllRanges();
+            document.body.removeChild(tmp);
+        }
+
+        async function copyPlain() {
+            const outputEl = document.getElementById('outputArea');
+            try {
+                await navigator.clipboard.writeText(outputEl.innerText);
+                showConfirm();
+            } catch (e) {
+                const ta = document.createElement('textarea');
+                ta.value = outputEl.innerText;
+                document.body.appendChild(ta);
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                showConfirm();
+            }
+        }
+
+        function showConfirm() {
+            const el = document.getElementById('copyConfirm');
+            el.classList.add('show');
+            setTimeout(() => el.classList.remove('show'), 2000);
+        }
+
+        function clearAll() {
+            document.getElementById('inputArea').innerHTML = '';
+            document.getElementById('outputArea').innerHTML = '';
+            document.getElementById('noMatchMsg').style.display = 'block';
+            document.getElementById('noMatchMsg').textContent = 'El texto procesado aparecerá aquí';
+            document.getElementById('statsBar').style.display = 'none';
+        }
+    </script>
+</body>
+
+</html>

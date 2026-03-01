@@ -1,0 +1,1003 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía Exhaustiva de Términos YouTube</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&display=swap');
+
+  :root {
+    --bg: #0a0a0f;
+    --surface: #111118;
+    --surface2: #1a1a24;
+    --border: #2a2a3a;
+    --red: #ff2d4a;
+    --orange: #ff6b2d;
+    --yellow: #ffd23f;
+    --green: #2dff8f;
+    --cyan: #2dd4ff;
+    --purple: #a855f7;
+    --text: #e8e8f0;
+    --muted: #8888a0;
+    --risk-extreme: #ff2d4a;
+    --risk-high: #ff6b2d;
+    --risk-medium: #ffd23f;
+    --risk-low: #2dff8f;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0a0a0f 0%, #1a0a1f 50%, #0a0f1a 100%);
+    border-bottom: 1px solid var(--border);
+    padding: 40px 24px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: -60px; left: -60px; right: -60px;
+    height: 200px;
+    background: radial-gradient(ellipse at 30% 50%, rgba(255,45,74,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(45,212,255,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .header-inner { max-width: 1100px; margin: 0 auto; position: relative; z-index: 1; }
+  .badge {
+    display: inline-block;
+    background: rgba(255,45,74,0.15);
+    border: 1px solid rgba(255,45,74,0.4);
+    color: var(--red);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 2px;
+    margin-bottom: 16px;
+  }
+  .header h1 {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800;
+    font-size: clamp(28px, 5vw, 52px);
+    line-height: 1.05;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #ffffff 0%, #a0a0c0 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .header p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.7;
+    max-width: 600px;
+  }
+
+  /* SEARCH & FILTER */
+  .controls {
+    max-width: 1100px;
+    margin: 24px auto;
+    padding: 0 24px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .search-wrap {
+    position: relative;
+    flex: 1;
+    min-width: 200px;
+  }
+  .search-wrap::before {
+    content: '⌕';
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 18px;
+    pointer-events: none;
+  }
+  #searchInput {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    font-family: 'Space Mono', monospace;
+    font-size: 13px;
+    padding: 10px 14px 10px 40px;
+    border-radius: 4px;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  #searchInput:focus { border-color: var(--cyan); }
+  #searchInput::placeholder { color: var(--muted); }
+
+  .filter-btns {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+  }
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 8px 14px;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+  .filter-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+  .filter-btn.active { background: rgba(45,212,255,0.1); border-color: var(--cyan); color: var(--cyan); }
+  .filter-btn[data-filter="all"].active { background: rgba(255,255,255,0.05); border-color: var(--text); color: var(--text); }
+
+  /* STATS BAR */
+  .stats-bar {
+    max-width: 1100px;
+    margin: 0 auto 24px;
+    padding: 0 24px;
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+  .stat-chip {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    padding: 8px 14px;
+    border-radius: 3px;
+    font-size: 11px;
+  }
+  .stat-chip .dot {
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+  .stat-chip .num { font-weight: 700; color: var(--text); }
+  .stat-chip .lbl { color: var(--muted); }
+
+  /* MAIN CONTENT */
+  .main { max-width: 1100px; margin: 0 auto; padding: 0 24px 60px; }
+
+  /* SECTION */
+  .section {
+    margin-bottom: 40px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding: 16px 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid;
+    border-radius: 4px;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.2s;
+  }
+  .section-header:hover { background: var(--surface2); }
+  .section-icon { font-size: 20px; }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 16px;
+    flex: 1;
+  }
+  .section-count {
+    background: rgba(255,255,255,0.07);
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    color: var(--muted);
+  }
+  .section-toggle { color: var(--muted); font-size: 12px; transition: transform 0.2s; }
+  .section-header.collapsed .section-toggle { transform: rotate(-90deg); }
+
+  .section-body { overflow: hidden; }
+  .section-body.collapsed { display: none; }
+
+  /* TABLE */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    margin-bottom: 8px;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+  }
+  thead tr {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+  thead th {
+    padding: 10px 16px;
+    text-align: left;
+    font-family: 'Space Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  tbody tr {
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    transition: background 0.15s;
+  }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,0.03); }
+  tbody tr.hidden-row { display: none; }
+
+  td { padding: 12px 16px; vertical-align: top; line-height: 1.5; }
+
+  .term-bad {
+    color: var(--red);
+    font-weight: 700;
+    white-space: nowrap;
+  }
+  .term-good {
+    color: var(--green);
+    font-size: 11px;
+    line-height: 1.6;
+  }
+  .term-good span {
+    display: block;
+    padding: 1px 0;
+  }
+  .term-good span::before { content: '→ '; opacity: 0.5; }
+
+  .context-text {
+    color: var(--muted);
+    font-size: 11px;
+    line-height: 1.6;
+    max-width: 300px;
+  }
+
+  /* RISK BADGE */
+  .risk {
+    display: inline-block;
+    padding: 3px 8px;
+    border-radius: 2px;
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .risk-extreme { background: rgba(255,45,74,0.15); color: var(--risk-extreme); border: 1px solid rgba(255,45,74,0.3); }
+  .risk-high { background: rgba(255,107,45,0.15); color: var(--risk-high); border: 1px solid rgba(255,107,45,0.3); }
+  .risk-medium { background: rgba(255,210,63,0.12); color: var(--risk-medium); border: 1px solid rgba(255,210,63,0.25); }
+  .risk-low { background: rgba(45,255,143,0.1); color: var(--risk-low); border: 1px solid rgba(45,255,143,0.2); }
+
+  /* CONTEXT TAGS */
+  .ctx-tags { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 4px; }
+  .ctx-tag {
+    font-size: 9px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    background: rgba(255,255,255,0.05);
+    color: var(--muted);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  /* RULES SECTION */
+  .rules-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+  .rule-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+  }
+  .rule-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 36px;
+    font-weight: 800;
+    color: rgba(255,255,255,0.06);
+    line-height: 1;
+    margin-bottom: 8px;
+  }
+  .rule-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--cyan);
+    margin-bottom: 8px;
+  }
+  .rule-body { font-size: 11px; color: var(--muted); line-height: 1.7; }
+  .rule-example {
+    margin-top: 10px;
+    padding: 8px 12px;
+    background: var(--surface2);
+    border-left: 2px solid var(--border);
+    border-radius: 2px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .rule-example strong { color: var(--text); }
+
+  /* SAFE WORDS */
+  .safe-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .safe-tag {
+    background: rgba(45,255,143,0.08);
+    border: 1px solid rgba(45,255,143,0.2);
+    color: var(--green);
+    padding: 6px 14px;
+    border-radius: 3px;
+    font-size: 11px;
+  }
+
+  /* ALGORITHM SECTION */
+  .algo-box {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    margin-bottom: 16px;
+  }
+  .algo-title {
+    font-family: 'Syne', sans-serif;
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--yellow);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .algo-list { list-style: none; }
+  .algo-list li {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 5px 0;
+    border-bottom: 1px solid rgba(42,42,58,0.5);
+    line-height: 1.6;
+    display: flex;
+    gap: 10px;
+  }
+  .algo-list li:last-child { border-bottom: none; }
+  .algo-list li::before { content: '▸'; color: var(--yellow); flex-shrink: 0; }
+
+  /* SECTION COLORS */
+  .sec-violencia .section-header { border-left-color: var(--red); }
+  .sec-violencia .section-icon::after { content: '🔴'; }
+  .sec-sexual .section-header { border-left-color: var(--orange); }
+  .sec-drogas .section-header { border-left-color: var(--purple); }
+  .sec-terrorismo .section-header { border-left-color: var(--red); }
+  .sec-salud .section-header { border-left-color: var(--cyan); }
+  .sec-menores .section-header { border-left-color: var(--red); }
+  .sec-discurso .section-header { border-left-color: var(--orange); }
+  .sec-desinformacion .section-header { border-left-color: var(--yellow); }
+  .sec-privacidad .section-header { border-left-color: var(--cyan); }
+  .sec-animales .section-header { border-left-color: var(--green); }
+  .sec-armas .section-header { border-left-color: var(--red); }
+
+  /* RESULTS COUNT */
+  #resultsCount {
+    font-size: 11px;
+    color: var(--muted);
+    padding: 0 24px;
+    max-width: 1100px;
+    margin: 0 auto 16px;
+  }
+
+  /* SCROLLBAR */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: var(--bg); }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  ::-webkit-scrollbar-thumb:hover { background: #3a3a50; }
+
+  /* HIGHLIGHT */
+  .hl { background: rgba(255,210,63,0.25); color: var(--yellow); border-radius: 2px; padding: 0 2px; }
+
+  @media (max-width: 600px) {
+    .header { padding: 24px 16px 20px; }
+    .controls, .stats-bar, .main { padding-left: 16px; padding-right: 16px; }
+    thead th:nth-child(4), td:nth-child(4) { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-inner">
+    <div class="badge">⚠ GUÍA OPERATIVA v3.0 — EXHAUSTIVA</div>
+    <h1>Términos Prohibidos<br>en YouTube</h1>
+    <p>Lista completa, reemplazos precisos, nivel de riesgo por contexto y reglas del algoritmo. Para creadores que necesitan hablar de temas sensibles sin penalizaciones.</p>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="search-wrap">
+    <input type="text" id="searchInput" placeholder="Buscar término, reemplazo o contexto...">
+  </div>
+  <div class="filter-btns">
+    <button class="filter-btn active" data-filter="all">Todos</button>
+    <button class="filter-btn" data-filter="extreme" style="color:#ff2d4a;border-color:rgba(255,45,74,0.3)">Extremo</button>
+    <button class="filter-btn" data-filter="high" style="color:#ff6b2d;border-color:rgba(255,107,45,0.3)">Alto</button>
+    <button class="filter-btn" data-filter="medium" style="color:#ffd23f;border-color:rgba(255,210,63,0.3)">Medio</button>
+    <button class="filter-btn" data-filter="low" style="color:#2dff8f;border-color:rgba(45,255,143,0.3)">Bajo</button>
+  </div>
+</div>
+
+<div class="stats-bar">
+  <div class="stat-chip"><div class="dot" style="background:#ff2d4a"></div><span class="num" id="cnt-extreme">0</span><span class="lbl">Riesgo extremo</span></div>
+  <div class="stat-chip"><div class="dot" style="background:#ff6b2d"></div><span class="num" id="cnt-high">0</span><span class="lbl">Riesgo alto</span></div>
+  <div class="stat-chip"><div class="dot" style="background:#ffd23f"></div><span class="num" id="cnt-medium">0</span><span class="lbl">Riesgo medio</span></div>
+  <div class="stat-chip"><div class="dot" style="background:#2dff8f"></div><span class="num" id="cnt-low">0</span><span class="lbl">Riesgo bajo</span></div>
+  <div class="stat-chip"><div class="dot" style="background:#a855f7"></div><span class="num" id="cnt-total">0</span><span class="lbl">Total términos</span></div>
+</div>
+
+<div id="resultsCount"></div>
+
+<div class="main" id="mainContent">
+
+<!-- ===================== SECCIÓN 1: VIOLENCIA ===================== -->
+<div class="section sec-violencia" data-section="violencia">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🔴</span>
+    <span class="section-title">VIOLENCIA Y MUERTE</span>
+    <span class="section-count">29 términos</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Término Prohibido</th><th>✅ Reemplazos Seguros</th><th>⚡ Riesgo</th><th>📌 Contexto / Cuándo se penaliza</th></tr></thead>
+        <tbody>
+          <tr data-risk="extreme"><td class="term-bad">Asesinar / asesinato</td><td class="term-good"><span>acabar con la vida de</span><span>el hecho criminal</span><span>el acto violento cometido</span><span>quitarle la vida</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Penalizado si se describe el método o se glorifica. En noticias con tono informativo, puede usarse con moderación. <div class="ctx-tags"><span class="ctx-tag">título</span><span class="ctx-tag">miniatura</span><span class="ctx-tag">guion detallado</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Matar / mató</td><td class="term-good"><span>acabar con la vida</span><span>segó su vida</span><span>le arrebató la vida</span><span>el desenlace fatal</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo alto combinado con nombres reales. Solo o en ficción genérica, riesgo medio. <div class="ctx-tags"><span class="ctx-tag">combinación con personas reales</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Asesino / asesina</td><td class="term-good"><span>el responsable</span><span>el perpetrador</span><span>el autor del crimen</span><span>quien cometió el hecho</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Riesgo si se glorifica o romantiza al perpetrador. Seguro en contexto judicial o noticioso. <div class="ctx-tags"><span class="ctx-tag">glorificación</span><span class="ctx-tag">thumbnails</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Muerte (en contexto violento)</td><td class="term-good"><span>el trágico desenlace</span><span>fallecimiento</span><span>la pérdida de vida</span><span>el fatal desenlace</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto noticioso o histórico, "muerte" sola suele ser segura. El riesgo sube si va acompañada de imágenes violentas. <div class="ctx-tags"><span class="ctx-tag">miniatura</span><span class="ctx-tag">contexto violento</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Sangre / ensangrentado</td><td class="term-good"><span>fluido rojo</span><span>rastros en la escena</span><span>evidencia biológica</span><span>marcas en el lugar</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Combinado con imágenes o thumbnails con rojo, puede activar restricción de edad o demonetización directa. <div class="ctx-tags"><span class="ctx-tag">miniatura</span><span class="ctx-tag">imágenes</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Estrangular / estrangulamiento</td><td class="term-good"><span>asfixia manual</span><span>presión en el cuello</span><span>el método utilizado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Cualquier descripción detallada del método es penalizable. Solo mencionar el hecho sin describir cómo, tiene riesgo medio. <div class="ctx-tags"><span class="ctx-tag">descripción de método</span><span class="ctx-tag">instruccional</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Asfixiar / asfixia</td><td class="term-good"><span>privar de aire</span><span>cortar la respiración</span><span>el acto que le impidió respirar</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Ídem estrangulamiento. En contexto médico o deportivo (apnea), riesgo bajo. <div class="ctx-tags"><span class="ctx-tag">método detallado</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Apuñalar / apuñalamiento</td><td class="term-good"><span>herir con arma blanca</span><span>atacar con filo</span><span>la agresión con arma</span><span>el ataque con objeto cortante</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Describe el tipo de ataque sin instrucción. El riesgo sube si se especifica zona del cuerpo o técnica. <div class="ctx-tags"><span class="ctx-tag">especificidad</span><span class="ctx-tag">instruccional</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Descuartizar / desmembrar</td><td class="term-good"><span>dividir el cuerpo</span><span>el acto de deshumanización extrema</span><span>los restos hallados</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Uno de los términos con penalización más rápida. Incluso en contexto noticioso es recomendable usar el reemplazo. <div class="ctx-tags"><span class="ctx-tag">siempre riesgo alto</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Torturar / tortura</td><td class="term-good"><span>someter a sufrimiento extremo</span><span>trato inhumano y degradante</span><span>el trato que recibió</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En contexto histórico (guerras, dictaduras) con enfoque educativo, riesgo medio. En contenido de entretenimiento, alto. <div class="ctx-tags"><span class="ctx-tag">detalle del método</span><span class="ctx-tag">entretenimiento</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Mutilar / mutilación</td><td class="term-good"><span>causar lesiones graves</span><span>daño físico irreversible</span><span>heridas de gravedad extrema</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En contexto médico o veterinario (amputación necesaria), riesgo bajo si el enfoque es clínico. <div class="ctx-tags"><span class="ctx-tag">descripción explícita</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Decapitar / decapitación</td><td class="term-good"><span>separar la cabeza del cuerpo</span><span>el acto más extremo del crimen</span><span>el hallazgo descrito por las autoridades</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Penalización casi inmediata en cualquier contexto que no sea histórico-académico muy cuidado. <div class="ctx-tags"><span class="ctx-tag">penalización directa</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Homicidio</td><td class="term-good"><span>el crimen</span><span>el delito cometido</span><span>el hecho investigado</span><span>el caso</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En noticias y documentales, uso relativamente seguro. El riesgo sube si el título y thumbnail son sensacionalistas. <div class="ctx-tags"><span class="ctx-tag">título sensacionalista</span><span class="ctx-tag">miniatura</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Asesinato en serie</td><td class="term-good"><span>crímenes en serie</span><span>patrón criminal múltiple</span><span>los múltiples casos vinculados</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Seguro en formato documental con tono serio. Riesgo si se presenta como entretenimiento o fascinación. <div class="ctx-tags"><span class="ctx-tag">glorificación</span><span class="ctx-tag">tono sensacionalista</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Serial killer</td><td class="term-good"><span>criminal en serie</span><span>asesino múltiple</span><span>el responsable de los crímenes</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En inglés puede activar filtros de contenido violento. En thumbnails con imagen impactante, riesgo extremo. <div class="ctx-tags"><span class="ctx-tag">inglés en thumbnails</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Masacre</td><td class="term-good"><span>tragedia colectiva</span><span>el incidente</span><span>los hechos</span><span>el ataque múltiple</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo extremo si va acompañado de imágenes. En historia (contexto educativo), riesgo medio con enfoque adecuado. <div class="ctx-tags"><span class="ctx-tag">imágenes asociadas</span><span class="ctx-tag">miniatura</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Arma homicida</td><td class="term-good"><span>el objeto utilizado</span><span>el instrumento del crimen</span><span>el arma hallada en la escena</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Riesgo medio si no se especifica el tipo. Alto si se menciona arma de fuego o arma blanca específica con instrucción. <div class="ctx-tags"><span class="ctx-tag">especificidad</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Cadáver</td><td class="term-good"><span>el cuerpo</span><span>los restos</span><span>la víctima hallada</span><span>el hallazgo de las autoridades</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En thumbnails, combinar con imagen oscura o tétrica activa penalización. En guion con tono informativo, uso moderado. <div class="ctx-tags"><span class="ctx-tag">thumbnails</span><span class="ctx-tag">imágenes</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Linchar / linchamiento</td><td class="term-good"><span>ataque colectivo</span><span>violencia de grupo</span><span>el acto de violencia multitudinaria</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Alto riesgo en cualquier contexto. En historia (EE.UU., racismo sistémico), usar con contexto educativo muy claro. <div class="ctx-tags"><span class="ctx-tag">contexto racial</span><span class="ctx-tag">violencia colectiva</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Inmolar / inmolación</td><td class="term-good"><span>acto de autosacrificio extremo</span><span>el trágico acto de protesta</span><span>la acción que cobró su vida</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo extremo si describe el método (fuego). En contexto político o histórico sin detalle, riesgo alto. <div class="ctx-tags"><span class="ctx-tag">descripción de método</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Veneno / envenenar</td><td class="term-good"><span>sustancia tóxica</span><span>el elemento utilizado</span><span>intoxicación deliberada</span><span>la sustancia que causó la muerte</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Penalización directa si se especifica el tipo de veneno o la dosis. En historia o biología, riesgo bajo con contexto claro. <div class="ctx-tags"><span class="ctx-tag">instruccional</span><span class="ctx-tag">especificidad</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Quemar / quemado vivo</td><td class="term-good"><span>morir en el incendio</span><span>víctima del fuego</span><span>el fatal incidente con fuego</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Contexto de incendio accidental: bajo riesgo. Contexto de crimen con fuego deliberado: alto riesgo. <div class="ctx-tags"><span class="ctx-tag">contexto criminal</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Golpear hasta la muerte</td><td class="term-good"><span>la agresión física que causó la muerte</span><span>la violencia que cobró su vida</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Cualquier frase que combine agresión física + muerte de forma directa activa penalización. <div class="ctx-tags"><span class="ctx-tag">combinación directa</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Ahogarse / ahogar</td><td class="term-good"><span>morir por inmersión</span><span>el incidente en el agua</span><span>privado de oxígeno en el agua</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Accidental: riesgo bajo. Deliberado (crimen): riesgo alto. Combinado con instrucción: extremo. <div class="ctx-tags"><span class="ctx-tag">intención del acto</span></div></td></tr>
+          <tr data-risk="medium"><td class="term-bad">Herida mortal / herida fatal</td><td class="term-good"><span>lesión que causó su fallecimiento</span><span>el daño que resultó fatal</span></td><td><span class="risk risk-medium">MEDIO</span></td><td class="context-text">Por sí sola, riesgo medio. Combinada con descripción detallada del tipo de herida, sube a alto. <div class="ctx-tags"><span class="ctx-tag">descripción específica</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Víctima fatal</td><td class="term-good"><span>la persona que perdió la vida</span><span>quien no sobrevivió</span><span>la persona fallecida</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En titulares sensacionalistas combinados con thumbnails fuertes, penalizable. En texto informativo, uso moderado posible. <div class="ctx-tags"><span class="ctx-tag">título</span><span class="ctx-tag">miniatura</span></div></td></tr>
+          <tr data-risk="medium"><td class="term-bad">Crimen pasional</td><td class="term-good"><span>crimen en contexto de relación</span><span>el hecho en el entorno íntimo</span><span>violencia en el ámbito personal</span></td><td><span class="risk risk-medium">MEDIO</span></td><td class="context-text">Riesgo medio. La palabra "crimen" sola es aceptada; el conjunto con "pasional" puede ser malinterpretado. <div class="ctx-tags"><span class="ctx-tag">contexto relacional</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Femicidio / feminicidio</td><td class="term-good"><span>crimen de género</span><span>la tragedia</span><span>el asesinato por razón de género</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto de denuncia social o periodismo serio, puede usarse. En thumbnails llamativos, riesgo alto. <div class="ctx-tags"><span class="ctx-tag">periodismo serio</span><span class="ctx-tag">miniatura</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Riña / pelea mortal</td><td class="term-good"><span>el altercado</span><span>el incidente violento</span><span>el enfrentamiento que resultó fatal</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Combinado con video de la pelea: penalización directa. Solo texto con tono informativo: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">video de pelea</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECCIÓN 2: SEXUAL ===================== -->
+<div class="section sec-sexual" data-section="sexual">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🟠</span>
+    <span class="section-title">CONTENIDO SEXUAL Y AGRESIÓN</span>
+    <span class="section-count">16 términos</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Término Prohibido</th><th>✅ Reemplazos Seguros</th><th>⚡ Riesgo</th><th>📌 Contexto / Cuándo se penaliza</th></tr></thead>
+        <tbody>
+          <tr data-risk="extreme"><td class="term-bad">Violar / violación</td><td class="term-good"><span>agresión sexual</span><span>el ataque</span><span>el hecho denunciado</span><span>la agresión que sufrió</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Penalizable si describe el acto. En noticias o contexto legal (juicio, sentencia), con cuidado. <div class="ctx-tags"><span class="ctx-tag">descripción del acto</span><span class="ctx-tag">juicio</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Violador</td><td class="term-good"><span>agresor sexual</span><span>el acusado</span><span>el condenado</span><span>el responsable</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo si se glorifica o se usa sin contexto legal claro. <div class="ctx-tags"><span class="ctx-tag">glorificación</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Abuso sexual</td><td class="term-good"><span>agresión sexual</span><span>el hecho</span><span>la denuncia</span><span>el acto que sufrió</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Relativamente tolerable en contexto legal y noticioso. El riesgo sube con descripción detallada. <div class="ctx-tags"><span class="ctx-tag">descripción detallada</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Abusar sexualmente</td><td class="term-good"><span>cometer una agresión sexual contra</span><span>el acto denunciado</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Como verbo activo, mayor riesgo que el sustantivo. Evitar en títulos. <div class="ctx-tags"><span class="ctx-tag">títulos</span><span class="ctx-tag">verbo activo</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Prostituta</td><td class="term-good"><span>trabajadora sexual</span><span>persona en situación de explotación</span><span>víctima de trata</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto sensacionalista, penalizable. En contexto de denuncia social o documental: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">sensacionalismo</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Prostíbulo</td><td class="term-good"><span>el local investigado</span><span>el establecimiento en cuestión</span><span>el lugar de los hechos</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Riesgo si se describe actividad dentro. En contexto de operativo policial o documental: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">descripción de actividad</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Pornografía</td><td class="term-good"><span>contenido para adultos</span><span>material explícito (solo contexto informativo)</span><span>industria del entretenimiento adulto</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo muy alto en cualquier forma. Solo aceptable en debates de política pública o salud con máximo cuidado. <div class="ctx-tags"><span class="ctx-tag">penalización casi directa</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Acto sexual / relación sexual</td><td class="term-good"><span>el acto íntimo</span><span>la situación</span><span>el hecho en cuestión</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Cualquier descripción de actos sexuales en detalle activa demonetización o eliminación. <div class="ctx-tags"><span class="ctx-tag">descripción</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Acoso sexual</td><td class="term-good"><span>hostigamiento</span><span>conducta inapropiada</span><span>el hecho denunciado</span><span>comportamiento no consentido</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto de denuncia o concienciación: relativamente seguro. En relato detallado: riesgo alto. <div class="ctx-tags"><span class="ctx-tag">denuncia</span><span class="ctx-tag">relato detallado</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Tráfico sexual</td><td class="term-good"><span>explotación</span><span>red criminal</span><span>trata de personas</span><span>crimen organizado contra personas</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Seguro en contexto documental serio con enfoque en víctimas. Riesgo si hay descripción de métodos. <div class="ctx-tags"><span class="ctx-tag">descripción de métodos</span><span class="ctx-tag">documental serio</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Desnudo (contexto sexual)</td><td class="term-good"><span>Evitar completamente en títulos, guion y miniatura</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En arte clásico o medicina con contexto educativo muy claro: uso moderado posible. En cualquier contexto sugestivo: eliminación. <div class="ctx-tags"><span class="ctx-tag">eliminación directa</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Consentimiento sexual</td><td class="term-good"><span>el acuerdo entre las partes</span><span>la voluntad de la persona</span><span>si hubo o no acuerdo</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En educación sexual: aceptable con cuidado. En contexto de crimen sexual: riesgo alto. <div class="ctx-tags"><span class="ctx-tag">educación sexual</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Sexo forzado</td><td class="term-good"><span>agresión sexual</span><span>el hecho no consentido</span><span>el acto cometido sin consentimiento</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Penalización directa en cualquier contexto. Sin excepción. <div class="ctx-tags"><span class="ctx-tag">penalización directa</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Seducción / manipulación sexual</td><td class="term-good"><span>manipulación emocional</span><span>comportamiento predatorio</span><span>la estrategia del agresor</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto de alerta o prevención: riesgo medio. Como tutorial o guía implícita: penalización directa. <div class="ctx-tags"><span class="ctx-tag">tono tutorial</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Masturbación / masturbarse</td><td class="term-good"><span>Evitar en cualquier contexto que no sea estrictamente médico</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En educación sexual médica muy controlada: posible con restricción de edad. En cualquier otro contexto: eliminación. <div class="ctx-tags"><span class="ctx-tag">eliminación</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Relación extramarital / infidelidad explícita</td><td class="term-good"><span>el engaño</span><span>la situación en la relación</span><span>el hecho en el vínculo afectivo</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Por sí solo, riesgo medio. Si se acompaña de contenido sugestivo visual o audio: alto. <div class="ctx-tags"><span class="ctx-tag">contenido visual sugestivo</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECCIÓN 3: DROGAS ===================== -->
+<div class="section sec-drogas" data-section="drogas">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🟣</span>
+    <span class="section-title">DROGAS Y SUSTANCIAS ILEGALES</span>
+    <span class="section-count">22 términos</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Término Prohibido</th><th>✅ Reemplazos Seguros</th><th>⚡ Riesgo</th><th>📌 Contexto / Cuándo se penaliza</th></tr></thead>
+        <tbody>
+          <tr data-risk="extreme"><td class="term-bad">Cocaína</td><td class="term-good"><span>polvo blanco</span><span>sustancia estimulante ilegal</span><span>el alijo incautado</span><span>la droga en cuestión</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo alto si glorifica el consumo o lo presenta como normalizado. En noticias de decomiso: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">glorificación</span><span class="ctx-tag">normalización</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Heroína</td><td class="term-good"><span>sustancia opioide ilegal</span><span>droga de alto riesgo</span><span>el material incautado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Ídem cocaína. En contexto de salud pública o adicción con enfoque de recuperación: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">glorificación</span><span class="ctx-tag">instruccional</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Marihuana / cannabis</td><td class="term-good"><span>la sustancia</span><span>el material vegetal</span><span>la droga en cuestión</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Varía por región y por si es legal. En estados/países donde es legal y en contexto informativo: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">legalidad regional</span><span class="ctx-tag">instruccional</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Metanfetamina / cristal / meth</td><td class="term-good"><span>estimulante sintético</span><span>sustancia de alto riesgo</span><span>droga de síntesis</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo extremo si hay cualquier descripción del proceso de síntesis. En noticias de operativos: riesgo alto. <div class="ctx-tags"><span class="ctx-tag">síntesis</span><span class="ctx-tag">instruccional</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Fentanilo</td><td class="term-good"><span>opioide sintético de alto riesgo</span><span>sustancia mortal</span><span>el fármaco adulterado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Crisis de salud pública relevante. En contexto informativo muy serio: posible. Cualquier otro: penalización. <div class="ctx-tags"><span class="ctx-tag">crisis de salud pública</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">LSD / ácido</td><td class="term-good"><span>sustancia alucinógena</span><span>droga psicoactiva</span><span>el compuesto</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto médico o de investigación psiquiátrica: riesgo medio. En contexto recreativo: alto. <div class="ctx-tags"><span class="ctx-tag">contexto recreativo</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Adicto / adicta</td><td class="term-good"><span>persona con dependencia</span><span>quien enfrenta una adicción</span><span>la persona afectada</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Usado con respeto y enfoque en recuperación: riesgo bajo. Usado de forma estigmatizante: alto. <div class="ctx-tags"><span class="ctx-tag">estigmatización</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Adicción</td><td class="term-good"><span>dependencia</span><span>el problema de salud</span><span>la lucha personal</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto de ayuda o recuperación: seguro. Combinado con glorificación del consumo: penalizable. <div class="ctx-tags"><span class="ctx-tag">tono de glorificación</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Sobredosis</td><td class="term-good"><span>consumo excesivo</span><span>intoxicación aguda</span><span>el incidente médico</span><span>la crisis por sustancias</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo extremo si describe cantidades, métodos o sustancias específicas. Como hecho noticioso: riesgo alto. <div class="ctx-tags"><span class="ctx-tag">cantidades específicas</span><span class="ctx-tag">método</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Narcotráfico</td><td class="term-good"><span>red criminal</span><span>crimen organizado</span><span>tráfico de sustancias ilegales</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En noticias y documentales: riesgo medio. Combinado con glorificación de narco-cultura: extremo. <div class="ctx-tags"><span class="ctx-tag">narco-cultura</span><span class="ctx-tag">glorificación</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Cómo preparar [droga]</td><td class="term-good"><span>NUNCA usar. No existe reemplazo seguro</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Cualquier variante instruccional sobre síntesis, preparación o adulteración: eliminación del canal. <div class="ctx-tags"><span class="ctx-tag">eliminación directa</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Jerga de drogas: jale, nieve, mota, cartón, trapear, perico, tiza</td><td class="term-good"><span>la sustancia</span><span>el material</span><span>el producto</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">YouTube tiene diccionarios de jerga de drogas actualizados. Detecta términos coloquiales de uso en el mercado. <div class="ctx-tags"><span class="ctx-tag">detección de jerga</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Cartel / cártel</td><td class="term-good"><span>organización criminal</span><span>red criminal</span><span>el grupo</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto informativo con narcocriminalidad: riesgo medio. Con glorificación del estilo de vida narco: extremo. <div class="ctx-tags"><span class="ctx-tag">glorificación</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Drogadicto</td><td class="term-good"><span>persona con dependencia a sustancias</span><span>quien atraviesa esta situación</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Término estigmatizante. Usar siempre el lenguaje centrado en la persona. <div class="ctx-tags"><span class="ctx-tag">estigmatización</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Droga para violar / burundanga</td><td class="term-good"><span>sustancia usada para incapacitar</span><span>droga de sumisión química</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Penalización directa. Solo aceptable en contexto de alerta de seguridad sin describir su obtención ni uso. <div class="ctx-tags"><span class="ctx-tag">penalización directa</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Pastillas / píldoras ilegales</td><td class="term-good"><span>medicamento adulterado</span><span>sustancia en forma de comprimido</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Si se identifican marcas o colores de pastillas específicas de uso recreativo ilegal: extremo. <div class="ctx-tags"><span class="ctx-tag">identificación específica</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Cultivar drogas / narco cultivo</td><td class="term-good"><span>la producción ilegal</span><span>la plantación descubierta</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Cualquier descripción de proceso de cultivo: penalización directa. En noticias de erradicación: riesgo alto. <div class="ctx-tags"><span class="ctx-tag">instruccional</span><span class="ctx-tag">proceso</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Dealer / trapero (vendedor de drogas)</td><td class="term-good"><span>distribuidor ilegal</span><span>el vendedor</span><span>el sujeto detenido</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto musical con glorificación del trapeo: extremo. En noticias: riesgo alto. <div class="ctx-tags"><span class="ctx-tag">música de glorificación</span></div></td></tr>
+          <tr data-risk="medium"><td class="term-bad">Intoxicación</td><td class="term-good"><span>el incidente médico</span><span>el estado de la persona</span></td><td><span class="risk risk-medium">MEDIO</span></td><td class="context-text">En medicina o contexto médico de urgencias: bajo riesgo. Si especifica sustancia ilegal: alto. <div class="ctx-tags"><span class="ctx-tag">contexto médico</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Lavado de dinero (narco)</td><td class="term-good"><span>el manejo de fondos ilícitos</span><span>la operación financiera irregular</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En noticias judiciales o económicas: riesgo medio. Como tutorial implícito o glorificación: extremo. <div class="ctx-tags"><span class="ctx-tag">glorificación</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Inyectarse / uso de jeringa (drogas)</td><td class="term-good"><span>el método de administración</span><span>la vía intravenosa</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En contexto médico: bajo riesgo. En contexto de uso de drogas: extremo, especialmente con imagen o descripción visual. <div class="ctx-tags"><span class="ctx-tag">imagen</span><span class="ctx-tag">descripción visual</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Crack (droga)</td><td class="term-good"><span>la sustancia derivada</span><span>el estupefaciente</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En noticias de decomiso: riesgo medio. En contexto de glorificación o instrucción: extremo. <div class="ctx-tags"><span class="ctx-tag">decomiso</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECCIÓN 4: TERRORISMO ===================== -->
+<div class="section sec-terrorismo" data-section="terrorismo">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">💣</span>
+    <span class="section-title">TERRORISMO, EXTREMISMO Y ARMAS DE DESTRUCCIÓN</span>
+    <span class="section-count">18 términos</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Término Prohibido</th><th>✅ Reemplazos Seguros</th><th>⚡ Riesgo</th><th>📌 Contexto / Cuándo se penaliza</th></tr></thead>
+        <tbody>
+          <tr data-risk="extreme"><td class="term-bad">Terrorista</td><td class="term-good"><span>perpetrador del ataque</span><span>autor del acto</span><span>el responsable</span><span>extremista armado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo si glorifica. En contexto noticioso o histórico: riesgo medio. Nunca en miniatura con imagen impactante. <div class="ctx-tags"><span class="ctx-tag">glorificación</span><span class="ctx-tag">miniatura</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Atentado terrorista</td><td class="term-good"><span>el ataque</span><span>el incidente</span><span>la tragedia</span><span>el hecho violento</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Seguro en contexto noticioso con tono informativo sobrio. Riesgo con imágenes de violencia. <div class="ctx-tags"><span class="ctx-tag">imágenes</span><span class="ctx-tag">tono sensacionalista</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Bomba</td><td class="term-good"><span>artefacto</span><span>dispositivo explosivo</span><span>el elemento utilizado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Riesgo muy alto en cualquier forma. Si describe componentes: eliminación directa del canal. <div class="ctx-tags"><span class="ctx-tag">eliminación directa</span><span class="ctx-tag">componentes</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Cómo hacer una bomba</td><td class="term-good"><span>NUNCA. Sin excepción posible</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Eliminación inmediata del video y posible suspensión del canal. <div class="ctx-tags"><span class="ctx-tag">suspensión de canal</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Arma química / biológica</td><td class="term-good"><span>agente tóxico</span><span>sustancia de guerra</span><span>el armamento mencionado en informes</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En historia militar: posible con contexto educativo muy claro. Cualquier descripción técnica: eliminación. <div class="ctx-tags"><span class="ctx-tag">descripción técnica</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Arma nuclear / bomba atómica (instruccional)</td><td class="term-good"><span>el armamento nuclear</span><span>el arsenal</span><span>la tecnología de destrucción masiva</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Historia e impacto: aceptable. Cualquier descripción técnica de funcionamiento o construcción: eliminación. <div class="ctx-tags"><span class="ctx-tag">descripción técnica</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Yihadista / yihad</td><td class="term-good"><span>extremista</span><span>militante radical</span><span>el grupo en cuestión</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Riesgo alto en cualquier contexto. En análisis político o periodístico serio: riesgo medio con mucho cuidado. <div class="ctx-tags"><span class="ctx-tag">periodismo serio</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Ataque suicida (bomba)</td><td class="term-good"><span>el ataque</span><span>la tragedia</span><span>el incidente con explosivos</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Combina terrorismo + suicidio. Penalización por ambas categorías simultáneamente. <div class="ctx-tags"><span class="ctx-tag">doble penalización</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Extremismo violento</td><td class="term-good"><span>radicalización</span><span>el fenómeno ideológico de riesgo</span><span>el grupo de ideas extremas</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En investigación académica o periodismo: riesgo medio. Con contenido que lo promueva: eliminación. <div class="ctx-tags"><span class="ctx-tag">promoción</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Genocidio (en tono apologético)</td><td class="term-good"><span>el crimen de lesa humanidad</span><span>la tragedia histórica</span><span>el evento de exterminio masivo</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Con enfoque educativo y denuncia: seguro. Con tono de justificación o negación: penalización directa. <div class="ctx-tags"><span class="ctx-tag">tono apologético</span><span class="ctx-tag">negación</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Arma de destrucción masiva</td><td class="term-good"><span>armamento de alto impacto</span><span>el arsenal mencionado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En política internacional o historia: riesgo medio. Cualquier contexto instruccional o glorificador: extremo. <div class="ctx-tags"><span class="ctx-tag">instruccional</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Golpe de Estado</td><td class="term-good"><span>ruptura institucional</span><span>el evento político</span><span>la crisis</span><span>el quiebre democrático</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En contexto histórico o análisis político: riesgo bajo. En contenido que promueva uno: extremo. <div class="ctx-tags"><span class="ctx-tag">análisis histórico</span><span class="ctx-tag">promoción</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Guerrilla / guerrillero</td><td class="term-good"><span>grupo armado irregular</span><span>fuerza no convencional</span><span>el grupo en cuestión</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En historia o periodismo: riesgo medio. En reclutamiento o glorificación: extremo. <div class="ctx-tags"><span class="ctx-tag">glorificación</span><span class="ctx-tag">reclutamiento</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Propaganda terrorista</td><td class="term-good"><span>el material difundido por el grupo</span><span>el contenido producido por la organización</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Mostrar, citar o difundir propaganda, incluso para criticarla, tiene riesgo muy alto. <div class="ctx-tags"><span class="ctx-tag">difusión</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Reclutamiento (para grupos violentos)</td><td class="term-good"><span>NUNCA describir métodos. Solo mencionar el fenómeno</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Cualquier contenido que explique cómo operan las redes de reclutamiento en detalle: eliminación. <div class="ctx-tags"><span class="ctx-tag">eliminación directa</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Francotirador (instruccional)</td><td class="term-good"><span>el tirador</span><span>el responsable del disparo</span><span>el atacante</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Como término histórico-militar: riesgo medio. Con descripción técnica de técnica o posición: extremo. <div class="ctx-tags"><span class="ctx-tag">descripción técnica</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Estado islámico / ISIS / Daesh</td><td class="term-good"><span>el grupo extremista</span><span>la organización terrorista</span><span>el grupo mencionado en los informes</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En análisis periodístico: riesgo medio. Cualquier contenido que reproduzca su simbología o mensajes: extremo. <div class="ctx-tags"><span class="ctx-tag">simbología</span><span class="ctx-tag">mensajes</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Explosivo casero / IED</td><td class="term-good"><span>el artefacto</span><span>el dispositivo improvisado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En noticias de desactivación de artefactos: riesgo alto. Cualquier descripción de construcción: eliminación. <div class="ctx-tags"><span class="ctx-tag">eliminación directa</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECCIÓN 5: SALUD MENTAL ===================== -->
+<div class="section sec-salud" data-section="salud">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🔵</span>
+    <span class="section-title">SALUD MENTAL, SUICIDIO Y AUTOLESIONES</span>
+    <span class="section-count">14 términos</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Término Prohibido</th><th>✅ Reemplazos Seguros</th><th>⚡ Riesgo</th><th>📌 Contexto / Cuándo se penaliza</th></tr></thead>
+        <tbody>
+          <tr data-risk="extreme"><td class="term-bad">Suicidio / suicidarse</td><td class="term-good"><span>quitarse la vida</span><span>el trágico desenlace</span><span>acabar con su propia vida</span><span>la decisión fatal</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">YouTube sigue el protocolo de seguridad de la OMS. Penalizado si describe método. Aceptado en contexto de concientización sin detalle. <div class="ctx-tags"><span class="ctx-tag">protocolo OMS</span><span class="ctx-tag">método</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Método de suicidio (cualquiera)</td><td class="term-good"><span>NUNCA. Sin excepción. No existe reemplazo seguro</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Eliminación inmediata del video. Posible suspensión permanente del canal. <div class="ctx-tags"><span class="ctx-tag">suspensión de canal</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Ahorcarse (suicidio)</td><td class="term-good"><span>el acto</span><span>el trágico hallazgo</span><span>la manera en que ocurrió</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Descripción de método de suicidio: penalización directa e inmediata. <div class="ctx-tags"><span class="ctx-tag">penalización directa</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Pastillas para morir</td><td class="term-good"><span>NUNCA en ningún contexto</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Combinación de medicamentos + suicidio: eliminación automática. <div class="ctx-tags"><span class="ctx-tag">eliminación automática</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Autolesión / cortarse</td><td class="term-good"><span>daño propio</span><span>el acto</span><span>situación de vulnerabilidad extrema</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En contexto de prevención y salud mental: riesgo alto pero posible. Con descripción de método o imágenes: eliminación. <div class="ctx-tags"><span class="ctx-tag">imágenes</span><span class="ctx-tag">método</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Trastorno alimenticio (detallado)</td><td class="term-good"><span>el trastorno de conducta alimentaria</span><span>la condición que atravesaba</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Cualquier descripción de métodos de restricción alimentaria o purga: extremo. En recuperación: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">métodos de purga</span><span class="ctx-tag">restricción</span></div></td></tr>
+          <tr data-risk="medium"><td class="term-bad">Depresión severa</td><td class="term-good"><span>trastorno depresivo mayor</span><span>la condición de salud mental</span></td><td><span class="risk risk-medium">MEDIO</span></td><td class="context-text">En contexto de concientización o apoyo: riesgo bajo. Combinado con suicidio o autolesión: sube a alto. <div class="ctx-tags"><span class="ctx-tag">combinación con suicidio</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Psicópata / psicopatía</td><td class="term-good"><span>persona con trastorno de la personalidad</span><span>trastorno antisocial</span><span>la condición diagnosticada</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Uso coloquial para insultar: penalizable. En contexto clínico o criminología: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">uso coloquial insultante</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Sociópata</td><td class="term-good"><span>persona con trastorno antisocial de la personalidad</span><span>el perfil psicológico descrito</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Ídem psicópata. Evitar como insulto o adjetivo informal. <div class="ctx-tags"><span class="ctx-tag">uso como insulto</span></div></td></tr>
+          <tr data-risk="medium"><td class="term-bad">Crisis nerviosa</td><td class="term-good"><span>crisis de salud mental</span><span>episodio de crisis emocional</span></td><td><span class="risk risk-medium">MEDIO</span></td><td class="context-text">Por sí solo, riesgo bajo. Combinado con contenido violento o de autolesión: sube. <div class="ctx-tags"><span class="ctx-tag">combinación</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Bulimia / anorexia (descripción de métodos)</td><td class="term-good"><span>el trastorno alimentario</span><span>la condición</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Describir métodos de purga, restricción calórica extrema o "consejos": penalización directa. En recuperación: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">métodos</span><span class="ctx-tag">consejos</span></div></td></tr>
+          <tr data-risk="medium"><td class="term-bad">Trauma / traumatizado</td><td class="term-good"><span>la experiencia que marcó</span><span>el impacto emocional severo</span></td><td><span class="risk risk-medium">MEDIO</span></td><td class="context-text">Solo, riesgo bajo. Combinado con contenido que glorifique el evento traumático: alto. <div class="ctx-tags"><span class="ctx-tag">glorificación del evento</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Pacto suicida</td><td class="term-good"><span>NUNCA. Sin reemplazo posible en detalle</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Como fenómeno noticioso en titulares sobrios: posible con cuidado extremo. Sin más detalle. <div class="ctx-tags"><span class="ctx-tag">penalización casi segura</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Eutanasia (con detalle)</td><td class="term-good"><span>muerte asistida</span><span>el procedimiento</span><span>el debate sobre el fin de vida</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Como debate ético o noticioso: riesgo medio. Con descripción de métodos o glorificación: extremo. <div class="ctx-tags"><span class="ctx-tag">debate ético</span><span class="ctx-tag">descripción de métodos</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECCIÓN 6: MENORES ===================== -->
+<div class="section sec-menores" data-section="menores">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🚸</span>
+    <span class="section-title">CRÍMENES CONTRA MENORES</span>
+    <span class="section-count">10 términos</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Término Prohibido</th><th>✅ Reemplazos Seguros</th><th>⚡ Riesgo</th><th>📌 Contexto / Cuándo se penaliza</th></tr></thead>
+        <tbody>
+          <tr data-risk="extreme"><td class="term-bad">Pedófilo / pederasta</td><td class="term-good"><span>depredador de menores</span><span>agresor de menores</span><span>el acusado</span><span>el condenado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Tolerancia cero. Cualquier contenido que minimice, glorifique o normalice: eliminación del canal. <div class="ctx-tags"><span class="ctx-tag">tolerancia cero</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Abuso infantil</td><td class="term-good"><span>agresión a menores</span><span>el hecho investigado</span><span>el crimen contra el menor</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Descripción del acto: eliminación. Denuncia o concientización sin detalle: posible con mucho cuidado. <div class="ctx-tags"><span class="ctx-tag">descripción del acto</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Grooming (detallado)</td><td class="term-good"><span>manipulación de menores</span><span>acercamiento predatorio</span><span>el método de captación</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En contexto de alerta y prevención: posible sin describir técnicas específicas. Con detalle de técnicas: extremo. <div class="ctx-tags"><span class="ctx-tag">técnicas específicas</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Material de abuso sexual infantil (CSAM)</td><td class="term-good"><span>NUNCA en ningún contexto</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Eliminación permanente del canal y reporte a autoridades. Sin excepciones. <div class="ctx-tags"><span class="ctx-tag">reporte a autoridades</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Explotación infantil</td><td class="term-good"><span>crimen contra la infancia</span><span>el delito investigado</span><span>la situación de vulnerabilidad de los menores</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En contexto de denuncia seria: posible. Con cualquier descripción de actividad: eliminación. <div class="ctx-tags"><span class="ctx-tag">descripción de actividad</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Tráfico de menores</td><td class="term-good"><span>trata de menores</span><span>crimen organizado contra la infancia</span><span>el delito de trata</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En periodismo de investigación serio: posible con máximo cuidado. Sin descripción de métodos. <div class="ctx-tags"><span class="ctx-tag">sin métodos</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Menor de edad en situación de riesgo</td><td class="term-good"><span>el menor en situación vulnerable</span><span>la víctima infantil</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">El solo hecho de involucrar menores en cualquier contexto de riesgo activa revisión manual. <div class="ctx-tags"><span class="ctx-tag">revisión manual</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Incesto (con menores)</td><td class="term-good"><span>NUNCA</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Eliminación permanente e inmediata. <div class="ctx-tags"><span class="ctx-tag">eliminación permanente</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Seducción de menores</td><td class="term-good"><span>comportamiento predatorio hacia menores</span><span>la estrategia del agresor</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Solo en contexto de alerta sin describir la metodología. Cualquier detalle: eliminación. <div class="ctx-tags"><span class="ctx-tag">descripción metodológica</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Pornografía infantil</td><td class="term-good"><span>NUNCA en ningún contexto</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Eliminación permanente, suspensión y reporte a autoridades. Sin ninguna excepción. <div class="ctx-tags"><span class="ctx-tag">reporte a autoridades</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECCIÓN 7: DISCURSO DE ODIO ===================== -->
+<div class="section sec-discurso" data-section="discurso">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🟠</span>
+    <span class="section-title">DISCURSO DE ODIO Y DISCRIMINACIÓN</span>
+    <span class="section-count">12 términos</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Término Prohibido</th><th>✅ Reemplazos Seguros</th><th>⚡ Riesgo</th><th>📌 Contexto / Cuándo se penaliza</th></tr></thead>
+        <tbody>
+          <tr data-risk="extreme"><td class="term-bad">Insultos raciales (N-word, etc.)</td><td class="term-good"><span>NUNCA pronunciar ni deletrear</span><span>la palabra / el insulto racial</span><span>el término despectivo</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Incluso en contexto educativo o crítico, pronunciar activa penalización automática. Describir sin pronunciar: posible. <div class="ctx-tags"><span class="ctx-tag">detección automática de audio</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Supremacista blanco / supremacismo racial</td><td class="term-good"><span>ideología de supremacía racial</span><span>el movimiento extremista</span><span>el grupo de odio</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En crítica o análisis: posible con contexto muy claro. En apoyo o simpatía: eliminación. <div class="ctx-tags"><span class="ctx-tag">tono de apoyo</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Nazis / nazismo (en glorificación)</td><td class="term-good"><span>el régimen totalitario</span><span>el movimiento fascista</span><span>el régimen criminal</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En historia: aceptable con enfoque crítico. Cualquier símbolo o glorificación: eliminación. <div class="ctx-tags"><span class="ctx-tag">simbología nazi</span><span class="ctx-tag">glorificación</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Homofóbico / transfóbico (insulto activo)</td><td class="term-good"><span>actitud discriminatoria</span><span>el comentario de odio</span><span>la postura que ataca la identidad</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Describir el fenómeno: posible. Ejecutarlo o validarlo: penalización. <div class="ctx-tags"><span class="ctx-tag">ejecución del odio</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Insultos por orientación sexual</td><td class="term-good"><span>NUNCA pronunciar</span><span>los insultos dirigidos a la comunidad</span><span>el lenguaje de odio</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Activación automática en audio. Describirlos sin pronunciarlos, en contexto crítico: posible. <div class="ctx-tags"><span class="ctx-tag">detección automática</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Xenofobia (incitación activa)</td><td class="term-good"><span>el rechazo al extranjero</span><span>actitud discriminatoria hacia migrantes</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Analizar el fenómeno: riesgo medio. Incitar a la discriminación: eliminación. <div class="ctx-tags"><span class="ctx-tag">incitación activa</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Antisemitismo (incitación)</td><td class="term-good"><span>el odio hacia la comunidad judía</span><span>el discurso discriminatorio</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">YouTube es especialmente sensible a este tema. Cualquier signo de incitación: eliminación rápida. <div class="ctx-tags"><span class="ctx-tag">sensibilidad especial</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Islamofobia (incitación)</td><td class="term-good"><span>el discurso de odio religioso</span><span>la actitud discriminatoria hacia la comunidad</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En análisis o crítica a prácticas específicas (no a personas): riesgo medio. En generalización peyorativa: alto. <div class="ctx-tags"><span class="ctx-tag">generalización</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Inferioridad racial / étnica</td><td class="term-good"><span>NUNCA</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Cualquier argumento que presente grupos étnicos como inferiores: eliminación inmediata. <div class="ctx-tags"><span class="ctx-tag">eliminación inmediata</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Misoginia (incitación activa)</td><td class="term-good"><span>actitud de odio hacia las mujeres</span><span>el fenómeno de discriminación de género</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Analizarla críticamente: posible. Promoverla activamente: penalización. <div class="ctx-tags"><span class="ctx-tag">promoción activa</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Pureza racial</td><td class="term-good"><span>NUNCA en ningún contexto</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Concepto asociado a ideologías genocidas. Eliminación automática. <div class="ctx-tags"><span class="ctx-tag">eliminación automática</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Eugenesia (como propuesta)</td><td class="term-good"><span>el debate histórico y ético sobre la selección humana</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Como historia o análisis ético: riesgo medio. Como propuesta o defensa: eliminación. <div class="ctx-tags"><span class="ctx-tag">propuesta activa</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECCIÓN 8: ARMAS ===================== -->
+<div class="section sec-armas" data-section="armas">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">🔫</span>
+    <span class="section-title">ARMAS Y MODIFICACIONES ILEGALES</span>
+    <span class="section-count">10 términos</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Término Prohibido</th><th>✅ Reemplazos Seguros</th><th>⚡ Riesgo</th><th>📌 Contexto / Cuándo se penaliza</th></tr></thead>
+        <tbody>
+          <tr data-risk="extreme"><td class="term-bad">Cómo conseguir un arma ilegalmente</td><td class="term-good"><span>NUNCA. Sin reemplazo posible</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Eliminación del canal. Sin excepción. <div class="ctx-tags"><span class="ctx-tag">eliminación directa</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Silenciador casero</td><td class="term-good"><span>el dispositivo</span><span>el accesorio</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Cualquier descripción de fabricación: eliminación. Como concepto en ficción: riesgo alto. <div class="ctx-tags"><span class="ctx-tag">fabricación</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Convertir arma (semiautomática a automática)</td><td class="term-good"><span>la modificación</span><span>la alteración ilegal del arma</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Descripción del proceso: eliminación. Como referencia en noticias de crimen: riesgo alto. <div class="ctx-tags"><span class="ctx-tag">descripción del proceso</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Ghost gun / arma fantasma</td><td class="term-good"><span>arma no registrada</span><span>arma sin número de serie</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">En noticias judiciales: riesgo alto. Cualquier instrucción: eliminación. <div class="ctx-tags"><span class="ctx-tag">instrucción</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Armería clandestina</td><td class="term-good"><span>depósito ilegal de armas</span><span>el alijo descubierto</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En noticias de operativos policiales: riesgo medio-alto. Sin contexto de autoridad: extremo. <div class="ctx-tags"><span class="ctx-tag">contexto policial</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Impresión 3D de armas</td><td class="term-good"><span>la tecnología utilizada para crear el objeto</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Penalizable incluso como noticia si da suficiente detalle para que sea instruccional. <div class="ctx-tags"><span class="ctx-tag">detalle instruccional</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Tráfico de armas</td><td class="term-good"><span>comercio ilegal de armamento</span><span>la red criminal</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En noticias o documentales: riesgo medio. Con descripción de canales o métodos: extremo. <div class="ctx-tags"><span class="ctx-tag">canales y métodos</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Cuchillo de combate / navaja con modificación ilegal</td><td class="term-good"><span>el arma blanca</span><span>el objeto</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Tutorial de modificación: eliminación. En contexto de crimen o coleccionismo legal: riesgo alto. <div class="ctx-tags"><span class="ctx-tag">tutorial</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Munición ilegal</td><td class="term-good"><span>el proyectil</span><span>el material balístico decomisado</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">En operativos: riesgo medio. Como guía de adquisición: extremo. <div class="ctx-tags"><span class="ctx-tag">guía de adquisición</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Arma de fuego sin licencia (instrucción de uso)</td><td class="term-good"><span>el arma en cuestión</span><span>el objeto hallado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">El contexto de uso sin licencia + instrucción: extremo. Como elemento en noticias judiciales: alto. <div class="ctx-tags"><span class="ctx-tag">instrucción de uso</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== SECCIÓN 9: DESINFORMACIÓN ===================== -->
+<div class="section sec-desinformacion" data-section="desinformacion">
+  <div class="section-header" onclick="toggleSection(this)">
+    <span class="section-icon">⚠️</span>
+    <span class="section-title">DESINFORMACIÓN Y CONTENIDO ENGAÑOSO</span>
+    <span class="section-count">8 términos</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="table-wrap">
+      <table>
+        <thead><tr><th>❌ Término Prohibido</th><th>✅ Reemplazos Seguros</th><th>⚡ Riesgo</th><th>📌 Contexto / Cuándo se penaliza</th></tr></thead>
+        <tbody>
+          <tr data-risk="extreme"><td class="term-bad">Cura para el cáncer (falsa)</td><td class="term-good"><span>el tratamiento estudiado</span><span>la terapia en investigación</span><span>el enfoque complementario</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Afirmar curas milagrosas sin respaldo científico: eliminación directa. En investigación legítima: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">afirmaciones sin base</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Vacunas causan [enfermedad] (desinformación)</td><td class="term-good"><span>el debate sobre la seguridad de vacunas</span><span>los estudios en revisión</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">YouTube tiene política específica contra desinformación médica. Afirmaciones falsas sobre vacunas: eliminación. <div class="ctx-tags"><span class="ctx-tag">política específica</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Deepfake (para engañar)</td><td class="term-good"><span>el contenido generado por IA</span><span>el video manipulado</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Deepfakes de personas reales sin consentimiento y con intención de engañar: eliminación. Educativos: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">consentimiento</span><span class="ctx-tag">intención</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Fraude electoral (afirmación sin prueba)</td><td class="term-good"><span>las denuncias</span><span>las alegaciones en investigación</span><span>los cuestionamientos sobre el proceso</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">YouTube es muy estricto en períodos electorales. Afirmaciones sin evidencia: penalización. Análisis con fuentes: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">períodos electorales</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Teoría conspirativa (presentada como hecho)</td><td class="term-good"><span>la teoría</span><span>la especulación</span><span>la hipótesis</span><span>lo que algunos afirman</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Presentar conspiraciones como hechos sin indicar que son teorías: penalizable. Con disclaimers claros: riesgo medio. <div class="ctx-tags"><span class="ctx-tag">presentación como hecho</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Tratamiento milagroso (médico)</td><td class="term-good"><span>el enfoque alternativo</span><span>la práctica en estudio</span><span>lo que algunos practicantes sostienen</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">YouTube aplica políticas de información médica. Afirmaciones médicas sin evidencia científica: demonetización o eliminación. <div class="ctx-tags"><span class="ctx-tag">política médica</span></div></td></tr>
+          <tr data-risk="high"><td class="term-bad">Noticias falsas (creación intencionada)</td><td class="term-good"><span>información no verificada</span><span>el reporte cuestionado</span></td><td><span class="risk risk-high">ALTO</span></td><td class="context-text">Crear contenido intencionalmente engañoso sobre eventos reales: penalización. Análisis de fake news: riesgo bajo. <div class="ctx-tags"><span class="ctx-tag">intención de engañar</span></div></td></tr>
+          <tr data-risk="extreme"><td class="term-bad">Suplantación de identidad (video)</td><td class="term-good"><span>el video en el que se imita a</span><span>la pieza de sátira</span></td><td><span class="risk risk-extreme">EXTREMO</span></td><td class="context-text">Sátira marcada claramente: riesgo bajo. Sin indicación de que es ficción o sátira: eliminación. <div class="ctx-tags"><span class="ctx-tag">sin disclaimer</span></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== PALABRAS SEGURAS ===================== -->
+<div class="section">
+  <div class="section-header" style="border-left-color: var(--green);" onclick="toggleSection(this)">
+    <span class="section-icon">✅</span>
+    <span class="section-title">VOCABULARIO SEGURO — USO LIBRE</span>
+    <span class="section-count">uso con moderación</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="algo-box">
+      <div class="algo-title">✅ Estas palabras son seguras en contexto informativo serio</div>
+      <div class="safe-grid">
+        <span class="safe-tag">Víctima</span><span class="safe-tag">Sobreviviente</span><span class="safe-tag">Perpetrador</span><span class="safe-tag">Agresor</span><span class="safe-tag">Acusado</span><span class="safe-tag">Condenado</span><span class="safe-tag">Absuelto</span><span class="safe-tag">Secuestro</span><span class="safe-tag">Cautiverio</span><span class="safe-tag">Crimen</span><span class="safe-tag">Delito</span><span class="safe-tag">Investigación</span><span class="safe-tag">Pesquisa</span><span class="safe-tag">Operativo</span><span class="safe-tag">Juicio</span><span class="safe-tag">Sentencia</span><span class="safe-tag">Condena</span><span class="safe-tag">Veredicto</span><span class="safe-tag">Absolución</span><span class="safe-tag">Denuncia</span><span class="safe-tag">Testimonio</span><span class="safe-tag">Evidencia</span><span class="safe-tag">Pericia forense</span><span class="safe-tag">Autopsia</span><span class="safe-tag">Informe médico</span><span class="safe-tag">Cuerpo (en contexto forense)</span><span class="safe-tag">Restos</span><span class="safe-tag">Hallazgo</span><span class="safe-tag">Incidente</span><span class="safe-tag">Suceso</span><span class="safe-tag">Tragedia</span><span class="safe-tag">Criminal</span><span class="safe-tag">Delincuente</span><span class="safe-tag">Imputado</span><span class="safe-tag">Detenido</span><span class="safe-tag">Sospechoso</span><span class="safe-tag">Preso</span><span class="safe-tag">Recluido</span><span class="safe-tag">Herido</span><span class="safe-tag">Lesionado</span><span class="safe-tag">Secuestrador</span><span class="safe-tag">Extorsionador</span><span class="safe-tag">Estafador</span><span class="safe-tag">Corrupción</span><span class="safe-tag">Crimen organizado</span><span class="safe-tag">Tráfico (genérico)</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===================== REGLAS DEL ALGORITMO ===================== -->
+<div class="section">
+  <div class="section-header" style="border-left-color: var(--yellow);" onclick="toggleSection(this)">
+    <span class="section-icon">🧠</span>
+    <span class="section-title">CÓMO FUNCIONA EL ALGORITMO DE DETECCIÓN</span>
+    <span class="section-count">reglas críticas</span>
+    <span class="section-toggle">▾</span>
+  </div>
+  <div class="section-body">
+    <div class="rules-grid">
+      <div class="rule-card">
+        <div class="rule-num">01</div>
+        <div class="rule-title">El Thumbnail es lo primero</div>
+        <div class="rule-body">YouTube analiza la miniatura con visión por computadora antes que el audio. Imágenes con tonos rojos, rostros de terror, armas o texto con palabras prohibidas activan revisión manual inmediata.</div>
+        <div class="rule-example"><strong>Riesgo:</strong> Thumbnail con fondo oscuro + texto "MURIÓ" + rostro impactado = demonetización probable.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">02</div>
+        <div class="rule-title">El Título es lo segundo</div>
+        <div class="rule-body">El título tiene más peso que el guion. YouTube lo analiza para clasificar el video antes de procesarlo. Un título limpio + guion cuidadoso = mucho menor riesgo que un título agresivo.</div>
+        <div class="rule-example"><strong>Regla:</strong> Si el término prohibido va en el título, el riesgo sube al menos un nivel respecto al guion.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">03</div>
+        <div class="rule-title">Los primeros 30 segundos importan más</div>
+        <div class="rule-body">El sistema pondera el inicio del video con mayor peso. No acumules términos sensibles en la introducción. Comienza con contexto, datos y tono informativo antes de entrar al tema delicado.</div>
+        <div class="rule-example"><strong>Táctica:</strong> Abre con estadística o contexto histórico → luego entra al tema.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">04</div>
+        <div class="rule-title">La combinación es el verdadero peligro</div>
+        <div class="rule-body">Una palabra sola puede ser tolerable. Combinada con otras, activa penalización. El algoritmo detecta patrones, no solo términos aislados.</div>
+        <div class="rule-example"><strong>Ejemplo:</strong> "matar" solo = medio riesgo. "matar" + nombre real + método específico = penalización segura.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">05</div>
+        <div class="rule-title">Glorificar = eliminación</div>
+        <div class="rule-body">El tono importa tanto como las palabras. Puedes hablar de cualquier crimen con tono informativo. No puedes presentarlo como algo positivo, heroico, divertido o que merece admiración.</div>
+        <div class="rule-example"><strong>Señal de riesgo:</strong> Música de fondo épica o emocionante durante descripción de crimen.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">06</div>
+        <div class="rule-title">YouTube detecta jerga actualizada</div>
+        <div class="rule-body">Los diccionarios de jerga se actualizan. Palabras coloquiales de drogas, violencia y sexo son detectadas igual que los términos formales. La evasión creativa de ortografía también es detectada.</div>
+        <div class="rule-example"><strong>Ejemplo:</strong> "k1ller", "muerr*e" → detectados por substitución de caracteres.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">07</div>
+        <div class="rule-title">Los menores = tolerancia cero automática</div>
+        <div class="rule-body">Cualquier contenido que involucre menores en contextos de riesgo, aunque sea informativo, activa revisión manual. El sistema tiene alertas específicas para este tipo de contenido.</div>
+        <div class="rule-example"><strong>Regla:</strong> Si hay un menor involucrado, el margen de error es cero.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">08</div>
+        <div class="rule-title">El audio es analizado</div>
+        <div class="rule-body">YouTube transcribe el audio con IA. Los insultos, términos prohibidos y patrones de discurso de odio son detectados en el guion hablado, no solo en el texto escrito del título o descripción.</div>
+        <div class="rule-example"><strong>Táctica:</strong> Usa el mismo cuidado en lo que dices que en lo que escribes.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">09</div>
+        <div class="rule-title">La descripción y etiquetas también cuentan</div>
+        <div class="rule-body">El sistema analiza título + descripción + etiquetas + guion hablado en conjunto. Un video limpio en audio pero con descripción problemática puede ser penalizado.</div>
+        <div class="rule-example"><strong>Regla:</strong> Aplica los mismos reemplazos en la descripción y en las etiquetas.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">10</div>
+        <div class="rule-title">El contexto del canal importa</div>
+        <div class="rule-body">Canales con historial de contenido de noticias, documentales o educación tienen más margen. Canales nuevos o con videos de entretenimiento puro tienen menos tolerancia con los mismos términos.</div>
+        <div class="rule-example"><strong>Consejo:</strong> Establece una línea editorial clara y consistente desde el inicio del canal.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">11</div>
+        <div class="rule-title">Diferencia entre demonetización y eliminación</div>
+        <div class="rule-body">Hay tres niveles: (1) Limitado para anunciantes (sin monetización), (2) Restricción de edad (no visible sin login), (3) Eliminación del video. Conocer la diferencia ayuda a gestionar el riesgo.</div>
+        <div class="rule-example"><strong>Regla:</strong> Demonetización = video existe pero no gana. Eliminación = video desaparece y puede afectar el canal.</div>
+      </div>
+      <div class="rule-card">
+        <div class="rule-num">12</div>
+        <div class="rule-title">Las apelaciones funcionan con contexto</div>
+        <div class="rule-body">Si un video es penalizado injustamente, el contexto educativo, el tono neutral y la ausencia de imágenes gráficas son los argumentos más efectivos en una apelación.</div>
+        <div class="rule-example"><strong>Consejo:</strong> Documenta siempre las fuentes usadas y el propósito informativo del video.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- end main -->
+
+<script>
+// DATA
+const allRows = [];
+
+function init() {
+  document.querySelectorAll('tbody tr').forEach(row => {
+    const risk = row.getAttribute('data-risk');
+    if (risk) allRows.push(row);
+  });
+  updateCounts();
+}
+
+function updateCounts() {
+  const extreme = allRows.filter(r => r.getAttribute('data-risk') === 'extreme').length;
+  const high = allRows.filter(r => r.getAttribute('data-risk') === 'high').length;
+  const medium = allRows.filter(r => r.getAttribute('data-risk') === 'medium').length;
+  const low = allRows.filter(r => r.getAttribute('data-risk') === 'low').length;
+  document.getElementById('cnt-extreme').textContent = extreme;
+  document.getElementById('cnt-high').textContent = high;
+  document.getElementById('cnt-medium').textContent = medium;
+  document.getElementById('cnt-low').textContent = low;
+  document.getElementById('cnt-total').textContent = allRows.length;
+}
+
+function toggleSection(header) {
+  header.classList.toggle('collapsed');
+  const body = header.nextElementSibling;
+  body.classList.toggle('collapsed');
+}
+
+// SEARCH
+let currentFilter = 'all';
+let currentSearch = '';
+
+function applyFilters() {
+  let visible = 0;
+  allRows.forEach(row => {
+    const risk = row.getAttribute('data-risk') || '';
+    const text = row.textContent.toLowerCase();
+    const matchesFilter = currentFilter === 'all' || risk === currentFilter;
+    const matchesSearch = currentSearch === '' || text.includes(currentSearch);
+    if (matchesFilter && matchesSearch) {
+      row.classList.remove('hidden-row');
+      visible++;
+    } else {
+      row.classList.add('hidden-row');
+    }
+  });
+
+  // Show/hide sections based on visible rows
+  document.querySelectorAll('.section[data-section]').forEach(section => {
+    const visibleInSection = section.querySelectorAll('tbody tr:not(.hidden-row)').length;
+    section.style.display = visibleInSection === 0 ? 'none' : '';
+    // Auto-expand if searching
+    if (currentSearch !== '') {
+      const header = section.querySelector('.section-header');
+      const body = section.querySelector('.section-body');
+      if (visibleInSection > 0) {
+        header.classList.remove('collapsed');
+        body.classList.remove('collapsed');
+      }
+    }
+  });
+
+  const rc = document.getElementById('resultsCount');
+  if (currentSearch !== '' || currentFilter !== 'all') {
+    rc.textContent = `${visible} término${visible !== 1 ? 's' : ''} encontrado${visible !== 1 ? 's' : ''}`;
+  } else {
+    rc.textContent = '';
+  }
+
+  // Highlight search
+  if (currentSearch) {
+    highlightSearch(currentSearch);
+  } else {
+    removeHighlights();
+  }
+}
+
+function highlightSearch(term) {
+  removeHighlights();
+  if (!term) return;
+  allRows.forEach(row => {
+    if (row.classList.contains('hidden-row')) return;
+    [0, 1, 3].forEach(i => {
+      const cell = row.cells[i];
+      if (!cell) return;
+      const orig = cell.innerHTML;
+      const regex = new RegExp(`(${term.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+      cell.innerHTML = orig.replace(regex, '<span class="hl">$1</span>');
+    });
+  });
+}
+
+function removeHighlights() {
+  document.querySelectorAll('.hl').forEach(el => {
+    el.replaceWith(document.createTextNode(el.textContent));
+  });
+  // Normalize
+  document.querySelectorAll('td').forEach(td => {
+    td.normalize();
+  });
+}
+
+document.getElementById('searchInput').addEventListener('input', function() {
+  currentSearch = this.value.toLowerCase().trim();
+  applyFilters();
+});
+
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    currentFilter = this.getAttribute('data-filter');
+    applyFilters();
+  });
+});
+
+init();
+</script>
+</body>
+</html>
